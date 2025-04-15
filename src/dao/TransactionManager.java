@@ -1,6 +1,9 @@
 package dao;
 
 import entity.model.*;
+
+import java.util.Date;
+import java.util.Scanner;
 import util.DBConnUtil;
 import util.DBPropertyUtil;
 
@@ -104,4 +107,60 @@ public class TransactionManager {
         return false;
     }
     
+    
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        TransactionManager manager = new TransactionManager();
+
+        // Student input
+        System.out.print("Enter Student ID: ");
+        int studentId = scanner.nextInt();
+        Student student = new Student();
+        student.setStudentID(studentId);
+
+        // Course input
+        System.out.print("Enter Course ID: ");
+        int courseId = scanner.nextInt();
+        Course course = new Course();
+        course.setCourseID(courseId);
+
+        // Teacher input
+        System.out.print("Enter Teacher ID to assign to Course: ");
+        int teacherId = scanner.nextInt();
+        Teacher teacher = new Teacher();
+        teacher.setTeacherID(teacherId);
+        course.setInstructorName(teacher);
+
+        // Enrollment input
+        System.out.print("Enter Enrollment ID: ");
+        int enrollmentId = scanner.nextInt();
+        Enrollment enrollment = new Enrollment();
+        enrollment.setEnrollmentID(enrollmentId);
+        enrollment.setStudent(student);
+        enrollment.setCourse(course);
+        enrollment.setEnrollmentDate(new Date());
+
+        System.out.println("\n🔄 Testing enrollStudent...");
+        manager.enrollStudent(enrollment);
+
+        // Assign teacher to course
+        System.out.println("\n🔄 Testing assignTeacherToCourse...");
+        manager.assignTeacherToCourse(course);
+
+        // Payment input
+        System.out.print("\nEnter Payment ID: ");
+        int paymentId = scanner.nextInt();
+        System.out.print("Enter Payment Amount: ");
+        double amount = scanner.nextDouble();
+        Payment payment = new Payment();
+        payment.setPaymentID(paymentId);
+        payment.setStudent(student);
+        payment.setAmount(amount);
+        payment.setDate(new Date());
+
+        System.out.println("\n🔄 Testing recordPayment...");
+        manager.recordPayment(payment);
+
+        scanner.close();
+    }
 }
